@@ -33,6 +33,7 @@ extension PDFViewController {
         }
         
         if startPageIndex >= 0 && startPageIndex < document.pageCount {
+            controller.startPageIndex = startPageIndex
             controller.currentPageIndex = startPageIndex
         } else {
             controller.currentPageIndex = 0
@@ -86,6 +87,8 @@ public final class PDFViewController: UIViewController {
     
     /// Current page being displayed
     private var currentPageIndex: Int = 0
+  
+    private var startPageIndex: Int?
     
     /// Bottom thumbnail controller
     private var thumbnailCollectionController: PDFThumbnailCollectionViewController?
@@ -148,7 +151,10 @@ public final class PDFViewController: UIViewController {
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        didSelectIndexPath(IndexPath(row: currentPageIndex, section: 0))
+        if let startPageIndex = startPageIndex{
+          didSelectIndexPath(IndexPath(row: startPageIndex, section: 0))
+          self.startPageIndex = nil
+        }
     }
     
     override public var prefersStatusBarHidden: Bool {
